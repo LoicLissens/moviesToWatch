@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+@import "libs/mixins";
+@import "libs/componemts";
+* {
+  font-family: "Montserrat", sans-serif;
+}
+body {
+  margin: 0;
+  background-color: black;
+}
+h2 {
+  color: orangered;
+}
+main {
+  @include flex-center;
+  flex-direction: column;
+  aside {
+    text-align: center;
+    padding: 5px;
+  }
+  #movielist {
+    @include flex-center;
+  }
+}
+
+header {
+  background-color: orangered;
+  height: 15vh;
+
+  .nav-top {
+    color: white;
+
+    @include flex-center;
+    justify-content: space-around;
+    h1 {
+      margin: 0;
+    }
+    a {
+      @include base-button;
+      border: solid 2px white;
+      text-decoration: none;
+    }
+  }
+}

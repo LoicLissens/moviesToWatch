@@ -1,0 +1,22 @@
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+@mixin base-button {
+  border: none;
+  padding: 5px;
+  background-color: orangered;
+  color: white;
+  border-radius: 5px;
+  &:active {
+    transform: scale(1.1);
+    box-shadow: 0px 2px 5px 0px black;
+  }
+}
+@mixin quote-bar {
+  height: 100%;
+
+  color: black;
+}
