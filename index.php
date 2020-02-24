@@ -1,5 +1,5 @@
 <?php
-
+ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -12,17 +12,19 @@
   <body>
     <header>
       <nav class="nav-top">
-        <?php if (!isset($_SESSION)) { ?>
+        <?php if (!isset($_SESSION['connected'])) { ?>
           <a  href="assets/php/views/connection.php">Se Connecter</a>
         <?php } else { ?>
-          <a>Se Déconnecter</a>
+          <a href="assets/php/models/disconnect.php">Se Déconnecter</a>
         <?php }?>
         <a class="logo" href="index.php"><img src="assets/img/motion-.svg" alt="Logo" /></a>
-        <?php if (!isset($_SESSION)) { ?>
+        <?php if (!isset($_SESSION['connected'])) { ?>
           <p id="list-button">Non Connecté</p>
         <?php } else { ?>
-          <p id="list-button">Bonjour</p>
+          <p id="list-button">Bonjour <?php echo $_SESSION['pseudo']; ?> </p>
         <?php }?>
+        
+        
       </nav>
     </header>
     <main>
@@ -33,7 +35,7 @@
         <select id="selectgenre">
           <option>Selectionez un genre</option>
         </select>
-        <?php if (isset($_SESSION)) { ?>
+        <?php if (isset($_SESSION['connected'])) { ?>
           <button id="mylist">Ma liste</button>
         <?php } ?>
       </aside>
@@ -41,6 +43,6 @@
       <section id="movielist"></section>
     </main>
   </body>
-
+ 
   <script src="app.js"></script>
 </html>

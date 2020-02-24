@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 if (isset($_POST['pseudo']) and isset($_POST['password'])  /*and isset($_POST_['submit'])*/) {
     // SANETIZATION AND check if password's are the same
 
@@ -28,7 +29,10 @@ if (isset($_POST['pseudo']) and isset($_POST['password'])  /*and isset($_POST_['
         $sql_user = $check_user->fetch();
         if ($sql_user) {
             if (password_verify($password, $sql_user['password'])) {
-                echo 'bon mdp';
+                $_SESSION['connected'] = true;
+                $_SESSION['pseudo'] = $username;
+                $_COOKIES['pseudo'] = $username;
+                header('Location:/moviesToWatch/index.php ');
             } else {
                 echo 'mauvais mdp';
             }

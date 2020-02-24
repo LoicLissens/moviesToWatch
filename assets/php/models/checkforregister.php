@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 if (isset($_POST['pseudo']) and isset($_POST['email']) and isset($_POST['password']) and isset($_POST['password2']) /*and isset($_POST_['submit'])*/) {
     // SANETIZATION AND check if password's are the same
     if ($_POST['password'] === $_POST['password2']) {
@@ -41,7 +42,9 @@ if (isset($_POST['pseudo']) and isset($_POST['email']) and isset($_POST['passwor
                 echo "Nom d'utilisateur déjà pris.";
             } else {
                 $insert_data->execute([$username, $email, $password]);
-                echo 'New record created successfully';
+                $_SESSION['connected'] = true;
+                $_SESSION['pseudo'] = $username;
+                header('Location:/moviesToWatch/index.php');
             }
         } catch (PDOException $e) {
             echo 'Connection failed: '.$e->getMessage();
