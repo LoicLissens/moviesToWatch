@@ -2,7 +2,7 @@
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,11 +13,11 @@
     <header>
       <nav class="nav-top">
         <?php if (!isset($_SESSION)) { ?>
-          <a >Se Connecter</a>
+          <a  href="assets/php/views/connection.php">Se Connecter</a>
         <?php } else { ?>
           <a>Se Déconnecter</a>
         <?php }?>
-        <img src="assets/img/motion-.svg" alt="Logo" />
+        <a class="logo" href="index.php"><img src="assets/img/motion-.svg" alt="Logo" /></a>
         <?php if (!isset($_SESSION)) { ?>
           <p id="list-button">Non Connecté</p>
         <?php } else { ?>

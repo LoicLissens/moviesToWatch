@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../css/style.min.css">
-    <title>Conenction</title>
+    <title>S'enregistrer</title>
 </head>
 <body>
 <header>
@@ -20,16 +20,16 @@
     <main>
         
         <div class="form">
-            <h3>Connexion</h3>
-            <form action="../models/checkforconnexion.php" method="post" >
-                
+            <h3>S'enregistrer</h3>
+            <form action="../models/checkforregister.php" method="post" >
                 <input type="text" name="pseudo" placeholder="pseudo" />
+                <input type="email" name="email" placeholder="Email" />
                 <input type="password" name="password" placeholder="Password" />
-                
+                <input type="password" name="password2" placeholder="Confirmer Password" />
                 <!-- Honeypot-->
                 <input style="display:none" type="text" name="nom" placeholder="nom" />
-                <button>Envoyer</button>
-                <p>Pas encore inscrit ? <a href="register.php">Enregistrez-vous</a></p>
+                <button type="submit" name="submit">Envoyer</button>
+                <p>Deja inscrit ? <a href="connection.php">Connectez-vous !</a></p>
             </form>
         </div>
     </main>

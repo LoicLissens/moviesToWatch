@@ -95,3 +95,48 @@ button {
   border-radius: 5px;
   position: relative;
 }
+// form
+.form {
+  width: 40%;
+  margin-top: 100px;
+  background-color: orangered;
+  border-radius: 5px;
+  h3 {
+    color: white;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+  }
+  form {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0px;
+    @include flex-center;
+    background-color: white;
+    width: 100%;
+    flex-direction: column;
+    color: black;
+    p {
+      margin-bottom: 5px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 15px;
+      font: 16px;
+    }
+    input {
+      box-sizing: border-box;
+
+      outline: none;
+      display: block;
+      width: 90%;
+      padding: 7px;
+      border: none;
+      border-bottom: 1px solid orangered;
+      background: transparent;
+      margin-bottom: 10px;
+      font: 16px Arial, Helvetica, sans-serif;
+      height: 45px;
+    }
+  }
+}

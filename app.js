@@ -1,4 +1,5 @@
 //! attention carte mettre en balise template html ou faire plusieurs creat element car innerhtml quand ca vient d'unAPI peut etre du script malhonnete
+//! https://developer.mozilla.org/fr/docs/Web/HTML/Element/template
 //GLOBAL VAR AND DOM SELECT
 let url;
 const allGenres = new Map();

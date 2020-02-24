@@ -25,7 +25,7 @@ main {
 
 header {
   background-color: orangered;
-  height: 15vh;
+  height: 17vh;
 
   .nav-top {
     color: white;
@@ -35,10 +35,25 @@ header {
     h1 {
       margin: 0;
     }
+    h2 {
+      color: white;
+    }
     a {
       @include base-button;
       border: solid 2px white;
       text-decoration: none;
+      cursor: pointer;
+    }
+    .logo {
+      border: none;
+      padding: 0;
+      margin: 0;
+      border-radius: 0px;
+
+      &:active {
+        transform: none;
+        box-shadow: none;
+      }
     }
   }
 }
