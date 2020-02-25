@@ -43,6 +43,13 @@
       <section id="movielist"></section>
     </main>
   </body>
- 
+  <script>let isConnected;</script>
+  <?php
+    if (isset($_SESSION['connected']) && true == $_SESSION['connected']) {
+        echo '<script> isConnected = true; </script>';
+    } else {
+        echo '<script> isConnected = false; </script>';
+    }
+  ?>
   <script src="app.js"></script>
 </html>

@@ -53,6 +53,16 @@
   p {
     margin: 10px;
   }
+  button {
+    @include base-button;
+    margin-bottom: 15px;
+  }
+  .to-hide {
+    display: none;
+  }
+  .to-display {
+    display: initial;
+  }
 }
 // Button
 button {

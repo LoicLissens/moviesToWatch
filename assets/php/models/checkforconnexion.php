@@ -27,11 +27,13 @@ if (isset($_POST['pseudo']) and isset($_POST['password'])  /*and isset($_POST_['
         $check_user = $connexion->prepare('SELECT * FROM users WHERE username=?');
         $check_user->execute([$check_user_data]);
         $sql_user = $check_user->fetch();
+        $id_user = $sql_user['id'];
+
         if ($sql_user) {
             if (password_verify($password, $sql_user['password'])) {
                 $_SESSION['connected'] = true;
                 $_SESSION['pseudo'] = $username;
-                $_COOKIES['pseudo'] = $username;
+                $_SESSION['id'] = $id_user;
                 header('Location:/moviesToWatch/index.php ');
             } else {
                 echo 'mauvais mdp';

@@ -1,10 +1,12 @@
 //! attention carte mettre en balise template html ou faire plusieurs creat element car innerhtml quand ca vient d'unAPI peut etre du script malhonnete
 //! https://developer.mozilla.org/fr/docs/Web/HTML/Element/template
-//GLOBAL VAR AND DOM SELECT
+//! HONEY POT
+//?GLOBAL VAR AND DOM SELECT
 let url;
 const allGenres = new Map();
 const urlGenre = "https://api.themoviedb.org/3/genre/movie/list?api_key=23ba62fc39d351bae842170d72f6ba3e&language=fr-Fr";
 let urlGenreSelected;
+const urlToAddFilm = "assets/php/models/pushtolist.php";
 const $listFilm = document.querySelector("#movielist");
 const $bestEver = document.getElementById("bestever");
 const $trends = document.getElementById("trends");
@@ -13,10 +15,11 @@ const $selectGenre = document.getElementById("selectgenre");
 const $listButton = document.getElementById("list-button");
 
 /*
-        FUNCTION
+        ?FUNCTION
 */
+
 const checkForConnect = () => {
-  if ($listButton.innerText === "Non Connecté") {
+  if (isConnected == false) {
     $listButton.style.visibility = "hidden";
   } else {
     $listButton.style.visibility = "visible";
@@ -70,16 +73,49 @@ const checkForResum = (resume) => {
     return "Pas de résumé disponible";
   }
 };
-const checkForGenre = (film) => {};
-// function to creat card
+const checkDisplayButton = () => {
+  if (isConnected == false) {
+    return "to-hide";
+  } else {
+    return "to-display";
+  }
+};
+// this const will push the film to the film to watch idFilm is a number
+const changeStateButton = ($idButton) => {
+  $idButton.innerText = "Film à voir";
+  $idButton.style.backgroundColor = "white";
+  $idButton.style.color = "orangered";
+  $idButton.disabled = true;
+};
+const pushToMyList = (idFilm) => {
+  const $idButton = document.getElementById(`${idFilm}`);
+  $idButton.addEventListener("click", () => {
+    fetch(urlToAddFilm, {
+      method: "post",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" }, //! way to don't post form or json format for what ?
+      body: "id=" + idFilm
+    })
+      .then((response) => {
+        return response.text();
+      })
+      .then((text) => {
+        console.log(text);
+        changeStateButton($idButton);
+      });
+  });
+};
+// ?function to creat card
 const creatCardFilm = (film) => {
   const pathUrl = film.poster_path;
+  const addList = checkDisplayButton();
+  const idFilm = film.id;
   const urlImage = `https://image.tmdb.org/t/p/w500${pathUrl}`;
   const myDiv = document.createElement("div");
   const vo = film.original_language.toUpperCase();
   const myClass = checkForRateClass(film.vote_average);
   const myRate = checkForRate(film.vote_average);
   const resume = checkForResum(film.overview);
+
   fetch(urlImage)
     .then((response) => {
       return response.blob();
@@ -102,9 +138,11 @@ const creatCardFilm = (film) => {
                             </div>
                             <h2>Résumé:</h2>
                             <p>${resume}</p>
+                            <button id="${idFilm}" class="${addList}" >Ajouter à ma liste</button>
                           </div>
                          </div>`;
       $listFilm.appendChild(myDiv);
+      pushToMyList(idFilm);
     })
     .catch((error) => {
       console.error(error);
@@ -117,41 +155,46 @@ const fetchFilm = (url) => {
     })
     .then((json) => {
       let filmOne = json.results;
-
       filmOne.forEach((el) => {
         creatCardFilm(el);
       });
     })
+
     .catch((error) => {
       console.error(error);
     });
 };
 /* ===================================
-              EVENT
+              ?EVENT
 ==================================== */
 window.addEventListener("load", () => {
   checkForConnect();
-  getAllGenre();
   $showFilm.innerText = "Les mieux notés:";
   url = "https://api.themoviedb.org/3/movie/top_rated?api_key=23ba62fc39d351bae842170d72f6ba3e&language=fr-FR&page=1";
+  getAllGenre();
   fetchFilm(url);
 });
 $bestEver.addEventListener("click", () => {
+  url = "https://api.themoviedb.org/3/movie/top_rated?api_key=23ba62fc39d351bae842170d72f6ba3e&language=fr-FR&page=1";
   $showFilm.innerText = "Les mieux notés:";
   removeCurrentCard();
-  url = "https://api.themoviedb.org/3/movie/top_rated?api_key=23ba62fc39d351bae842170d72f6ba3e&language=fr-FR&page=1";
   fetchFilm(url);
 });
 $trends.addEventListener("click", () => {
+  url = "https://api.themoviedb.org/3/trending/all/day?api_key=23ba62fc39d351bae842170d72f6ba3e&language=fr-FR&page=1";
   $showFilm.innerText = "Films tendances:";
   removeCurrentCard();
-  url = "https://api.themoviedb.org/3/trending/all/day?api_key=23ba62fc39d351bae842170d72f6ba3e";
   fetchFilm(url);
 });
 
 $selectGenre.addEventListener("change", () => {
   $showFilm.innerText = $selectGenre.value;
-  urlGenreSelected = `https://api.themoviedb.org/3/discover/movie?api_key=23ba62fc39d351bae842170d72f6ba3e&language=fr-FR&with_genres=${allGenres.get($selectGenre.value)}`;
+  urlGenreSelected = `https://api.themoviedb.org/3/discover/movie?api_key=23ba62fc39d351bae842170d72f6ba3e&language=fr-FR&with_genres=${allGenres.get($selectGenre.value)}&page=1`;
   removeCurrentCard();
   fetchFilm(urlGenreSelected);
 });
+if (isConnected == true) {
+  console.log("Connecté");
+} else {
+  console.log("nooooon Connecté");
+}

@@ -31,19 +31,23 @@ if (isset($_POST['pseudo']) and isset($_POST['email']) and isset($_POST['passwor
         try {
             $connexion = new PDO("mysql:host={$servername};dbname={$dbname}", $username_db, $password_db);
             $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
             $insert_data = $connexion->prepare('INSERT INTO users(username, email, password) VALUES(?,?,?)');
-
             $check_user_data = $username;
             $check_user = $connexion->prepare('SELECT * FROM users WHERE username=?');
             $check_user->execute([$check_user_data]);
             $sql_user = $check_user->fetch();
+
             if ($sql_user) {
                 echo "Nom d'utilisateur déjà pris.";
             } else {
                 $insert_data->execute([$username, $email, $password]);
                 $_SESSION['connected'] = true;
                 $_SESSION['pseudo'] = $username;
+                $get_id = $connexion->prepare('SELECT id FROM users WHERE username=?');
+                $get_id->execute([$check_user_data]);
+                $fetch_id = $get_id->fetch();
+                $_SESSION['id'] = $fetch_id['id'];
+
                 header('Location:/moviesToWatch/index.php');
             }
         } catch (PDOException $e) {
