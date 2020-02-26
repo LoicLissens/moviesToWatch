@@ -63,6 +63,14 @@
   .to-display {
     display: initial;
   }
+  .in-my-list {
+    color: orangered;
+    background-color: white;
+    cursor: not-allowed;
+    &:active {
+      transform: none;
+    }
+  }
 }
 // Button
 button {

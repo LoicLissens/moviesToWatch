@@ -1,18 +1,20 @@
 //! attention carte mettre en balise template html ou faire plusieurs creat element car innerhtml quand ca vient d'unAPI peut etre du script malhonnete
 //! https://developer.mozilla.org/fr/docs/Web/HTML/Element/template
-//! HONEY POT
+//! HONEY POT// voir htmlentities PHP
 //?GLOBAL VAR AND DOM SELECT
 let url;
 const allGenres = new Map();
 const urlGenre = "https://api.themoviedb.org/3/genre/movie/list?api_key=23ba62fc39d351bae842170d72f6ba3e&language=fr-Fr";
 let urlGenreSelected;
 const urlToAddFilm = "assets/php/models/pushtolist.php";
+const urlToGetFilm = "assets/php/models/getfilmtowatch.php";
 const $listFilm = document.querySelector("#movielist");
 const $bestEver = document.getElementById("bestever");
 const $trends = document.getElementById("trends");
 const $showFilm = document.getElementById("showfilm");
 const $selectGenre = document.getElementById("selectgenre");
 const $listButton = document.getElementById("list-button");
+const $myListButton = document.getElementById("mylist");
 
 /*
         ?FUNCTION
@@ -80,13 +82,13 @@ const checkDisplayButton = () => {
     return "to-display";
   }
 };
-// this const will push the film to the film to watch idFilm is a number
+
 const changeStateButton = ($idButton) => {
-  $idButton.innerText = "Film à voir";
-  $idButton.style.backgroundColor = "white";
-  $idButton.style.color = "orangered";
+  $idButton.innerText = "Dans ma liste";
+  $idButton.classList.add("in-my-list");
   $idButton.disabled = true;
 };
+// this const will push the film to the film to watch idFilm is a number
 const pushToMyList = (idFilm) => {
   const $idButton = document.getElementById(`${idFilm}`);
   $idButton.addEventListener("click", () => {
@@ -101,8 +103,58 @@ const pushToMyList = (idFilm) => {
       .then((text) => {
         console.log(text);
         changeStateButton($idButton);
+      })
+      .catch((error) => {
+        console.error(error);
       });
   });
+};
+// This fct will fetch all the movie in the list of the current connected user and display it
+
+const getFilmToWatch = () => {
+  fetch(urlToGetFilm)
+    .then((response) => {
+      return response.text();
+    })
+    .then((text) => {
+      text = text.split(",");
+      text.pop();
+      text.forEach((el) => {
+        let url = `https://api.themoviedb.org/3/movie/${el}?api_key=23ba62fc39d351bae842170d72f6ba3e&language=fr-FR`;
+        fetch(url)
+          .then((response) => {
+            return response.json();
+          })
+          .then((json) => {
+            creatCardFilm(json);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+const checkIsFilmIsToWatch = (idFilm) => {
+  const $idButton = document.getElementById(`${idFilm}`);
+  fetch(urlToGetFilm)
+    .then((response) => {
+      return response.text();
+    })
+    .then((text) => {
+      text = text.split(",");
+      text.pop();
+      text.forEach((el) => {
+        if (el == idFilm) {
+          changeStateButton($idButton);
+        }
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 // ?function to creat card
 const creatCardFilm = (film) => {
@@ -144,6 +196,10 @@ const creatCardFilm = (film) => {
       $listFilm.appendChild(myDiv);
       pushToMyList(idFilm);
     })
+    .then(() => {
+      checkIsFilmIsToWatch(idFilm);
+    })
+
     .catch((error) => {
       console.error(error);
     });
@@ -193,8 +249,10 @@ $selectGenre.addEventListener("change", () => {
   removeCurrentCard();
   fetchFilm(urlGenreSelected);
 });
-if (isConnected == true) {
-  console.log("Connecté");
-} else {
-  console.log("nooooon Connecté");
+if (isConnected) {
+  $myListButton.addEventListener("click", () => {
+    $showFilm.innerText = "Ma liste de films:";
+    removeCurrentCard();
+    getFilmToWatch();
+  });
 }

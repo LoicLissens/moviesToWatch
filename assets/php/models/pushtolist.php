@@ -1,7 +1,15 @@
 <?php
 
 session_start();
-$film_id = $_POST['id'];
+$filters = [
+    'id' => FILTER_SANITIZE_STRING,
+];
+
+$SanitizedResult = filter_input_array(INPUT_POST, $filters);
+foreach ($filters as $key => $value) {
+    $SanitizedResult[$key] = trim($SanitizedResult[$key]);
+}
+$film_id = $SanitizedResult['id'];
 $servername = 'localhost';
 $username_db = 'root';
 $password_db = 'root';
