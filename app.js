@@ -1,7 +1,13 @@
 //! attention carte mettre en balise template html ou faire plusieurs creat element car innerhtml quand ca vient d'unAPI peut etre du script malhonnete
 //! https://developer.mozilla.org/fr/docs/Web/HTML/Element/template
+//! anglais/fr/ pagination/ remove vrom my list and new button for movies already watched
 //! HONEY POT// voir htmlentities PHP
-//?GLOBAL VAR AND DOM SELECT
+//! redirection page connection si mdp foirer
+//! mdp ddb webhost = rootroot/ et utilisateur = id12726260_root et nom ddb = id12726260_watchmovies
+
+/* ===================================
+        ?GLOBAL VAR AND DOM SELECT
+==================================== */
 let url;
 const allGenres = new Map();
 const urlGenre = "https://api.themoviedb.org/3/genre/movie/list?api_key=23ba62fc39d351bae842170d72f6ba3e&language=fr-Fr";
@@ -16,9 +22,9 @@ const $selectGenre = document.getElementById("selectgenre");
 const $listButton = document.getElementById("list-button");
 const $myListButton = document.getElementById("mylist");
 
-/*
-        ?FUNCTION
-*/
+/* ===================================
+              ?FUNCTION
+==================================== */
 
 const checkForConnect = () => {
   if (isConnected == false) {
@@ -101,7 +107,6 @@ const pushToMyList = (idFilm) => {
         return response.text();
       })
       .then((text) => {
-        console.log(text);
         changeStateButton($idButton);
       })
       .catch((error) => {
